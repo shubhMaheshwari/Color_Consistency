@@ -1,3 +1,4 @@
+- Download cvx zip file
 - First need to extract the cvx zip file
 - cd into it & run cvx_setup
 - Then you can run final.m or video.m or panorama.m
