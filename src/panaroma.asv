@@ -1,0 +1,47 @@
+clc;
+close all;
+clear;
+dirname = 'panaroma\';
+files = dir(strcat(dirname,'*.jpg'));
+ct = 0;
+for file = files'
+    ct = ct+1;
+    im_set{ct} = imread(strcat(dirname,file.name));
+    im_res{ct} = im_set{ct};
+end
+
+W = zeros(ct,ct);
+
+adj_mat = zeros(ct,ct);
+for i=1:1:ct
+    for j=1:1:ct
+        if j==i
+            W(i,j) = 0;
+            continue;
+        end
+        [M,w,TT] = Affinity(im_set{i},im_set{j});
+        W(i,j)=sum(sum(w));
+    end
+end
+
+ref = 1;
+qu = zeros(1,ct*ct);
+i = 1;
+j = 1;
+vis = zeros(1,ct);
+
+qu(i) = ref;
+vis(1) = 1;
+j=j+1;
+
+im_res
+for i=2:ct
+    if W(i,i-1)~=0
+        im_res{i} = CalAns(im_set{i},im_res{i-1});
+    end
+end
+
+for i=1:ct
+    im_res{i} = (im_res{i} - min(min(min(im_res{i}))))/(max(max(max(im_res{i})))-min(min(min(im_res{i}))));
+    disp((max(max(max(im_res{i})))-min(min(min(im_res{i})))));
+end
